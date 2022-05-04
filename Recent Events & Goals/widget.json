@@ -1,0 +1,71 @@
+{
+    "eventsLimit": {
+      "type": "number",
+      "label": "Limit of displayed names per event:",
+      "value": 5,
+      "step": 1,
+      "min": 1,
+      "max": 10,
+      "group": "Main"
+    },
+    "enableRecentFollowers": {
+        "type": "checkbox",
+      "label": "Show follower events",
+      "group": "Main"
+    },
+    "enableRecentSubs": {
+        "type": "checkbox",
+      "label": "Show subscriber events",
+      "group": "Main"
+    },
+    "followerTitleText": {
+        "type": "text",
+      "label": "Title text",
+      "value": "Recent followers:",
+      "group": "Recent followers"
+    },
+    "followerEventText": {
+        "type": "text",
+      "label": "Follower event text",
+      "value": "{name}, ",
+      "group": "Recent followers"
+    },
+    "followerEnableScroll": {
+      "type": "checkbox",
+      "label": "Enable scroll",
+      "group": "Recent followers"
+    },
+    "followerScrollSpeed": {
+      "type": "number",
+        "value": 25,
+        "min": 1,
+      "max": 100,
+      "label": "Scroll speed",
+      "group": "Recent followers"
+    },
+    "subscriberTitleText": {
+        "type": "text",
+      "label": "Title text",
+      "value": "Recent subscribers:",
+      "group": "Recent subscribers"
+    },
+    "subscriberEventText": {
+        "type": "text",
+      "label": "Subscriber event text",
+      "value": "{name} x{amount} month(s), ",
+      "group": "Recent subscribers"
+    },
+    "subscriberEnableScroll": {
+      "type": "checkbox",
+      "label": "Enable scroll",
+      "group": "Recent subscribers"
+    },
+    "subscriberScrollSpeed": {
+      "type": "number",
+        "value": 25,
+        "min": 1,
+      "max": 100,
+      "label": "Scroll speed",
+      "group": "Recent subscribers"
+    }
+  }

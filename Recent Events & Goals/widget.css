@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family={fontName}');
+
+* {
+    font-family: '{{fontName}}', sans-serif;
+    color: {fontColor};
+    text-shadow: {shadow};
+    text-transform: {textTransform};
+}
+
+@keyframes slide {
+  from { left: 100%;}
+  to { left: -100%;}
+}
+@-webkit-keyframes slide {
+  from { left: 100%;}
+  to { left: -100%;}
+}
+
+.hidden {
+	display: none;
+}
+
+.main-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 30pt;
+    font-weight: var(--font-weight);
+}
+
+.slide {
+    width: 100%;
+    height: 100%;
+    text-align:{textAlign};
+}
+
+.dynamic {
+    display: inline-block;
+}
+
+.text {
+    height: 100%;
+    align-items: center;
+}
+
+.scroll {
+  position:absolute;
+  left:0;
+  width:100%;
+  animation-name: slide;
+  animation-duration: {followerScrollSpeed}s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: slide;
+  -webkit-animation-duration: {followerScrollSpeed}s;
+  -webkit-animation-timing-function:linear;
+  -webkit-animation-iteration-count: infinite;
+}
