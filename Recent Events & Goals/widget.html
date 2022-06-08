@@ -3,11 +3,35 @@
 <script src="https://cdn.jsdelivr.net/npm/fitty@2.2.6/dist/fitty.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js" crossorigin="anonymous"></script>
 <div class="main-container"> 
-  <div class="slide" id="recent-followers">
+  <div class="slide hidden" id="recent-followers">
     <div class="text"><span class="dynamic">{followerTitleText}</span><br/><span class="dynamic" id="recent-followers-text">{followerEventText}</span></div>
   </div>
-   
-  <div class="slide" id="recent-subscribers">
+  
+  <div class="slide hidden" id="recent-subscribers">
     <div class="text"><span class="dynamic">{subscriberTitleText}</span><br/><span class="dynamic" id="recent-subscribers-text">{subscriberEventText}</span></div>
+  </div>
+  
+  <div class="slide hidden" id="recent-cheers">
+  	<div class="text"><span class="dynamic">{cheerTitleText}</span><br/><span class="dynamic" id="recent-cheers-text">{cheerEventText}</span></div>
+  </div>
+  
+  <div class="slide hidden" id="recent-tips">
+  	<div class="text"><span class="dynamic">{tipTitleText}</span><br/><span class="dynamic" id="recent-tips-text">{tipEventText}</span></div>
+  </div>
+  	
+  <div class="slide hidden" id="recent-raids">
+  	<div class="text"><span class="dynamic">{raidTitleText}</span><br/><span class="dynamic" id="recent-raids-text">{raidEventText}</span></div>
+  </div>
+ 
+  <div class="slide hidden" id="follower-goal">
+  	<div class="text"><span class="dynamic">{followerGoalTitleText}</span><br/><span class="dynamic" id="follower-goal-text">{followGoalText}</span></div>
+  </div>
+  
+  <div class="slide hidden" id="subscriber-goal">
+  	<div class="text"><span class="dynamic">{subscriberGoalTitleText}</span><br/><span class="dynamic" id="subscriber-goal-text">{subscriberGoalText}</span></div>
+  </div>
+  
+  <div class="slide hidden" id="tip-goal">
+  	<div class="text"><span class="dynamic">{tipGoalTitleText}</span><br/><span class="dynamic" id="tip-goal-text">{tipGoalText}</span></div>
   </div>
 </div>
