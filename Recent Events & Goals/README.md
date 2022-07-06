@@ -27,6 +27,8 @@ Have an all-in-one widget able to show:
 - Change the number of displayed names for all events
 - Change the duration of every event
 - Enable/disable specific events
+- Preview mode allows you to use dummy data to visualize the widget without having the specific data
+
 #### Recent Followers
 - Change the title of the event
 - Change the template used for each username
@@ -89,13 +91,21 @@ Have an all-in-one widget able to show:
 - _Use `{count}` to display the subscriber count_
 
 #### Cheer Goal
-🚧 *Not yet implemented...* 🚧
+- Change the title of the event
+- Change the template used
+- Change the used count information:
+    - `Total`: displays the total number of cheers
+    - `Goal`: uses the total amount received in the goals section of session data
+    - `Session`: uses the total amount received during the current streaming session
+    - `Weekly`: uses the total amount received during the current week
+    - `Monthly`: uses the total amount received during the current month
+- _Use `{count}` to display the cheer count_
 
 #### Tip Goal
 - Change the title of the event
 - Change the template used
 - Change the used count information:
-    - `Total`: displays the total number of subscribers
+    - `Total`: displays the total number of tips
     - `Goal`: uses the total amount received in the goals section of session data
     - `Session`: uses the total amount received during the current streaming session
     - `Weekly`: uses the total amount received during the current week

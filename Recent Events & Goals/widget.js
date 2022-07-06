@@ -1,4 +1,23 @@
-let nbPerEvent = {eventsLimit}, events = [], currentEvent = 0;
+let fieldData, sessionData, nbPerEvent = {eventsLimit}, events = [], currentEvent = 0;
+//console.log("chosen events:", events);
+
+function getRandomNames() {
+  let previewNames = ["thing_1", "thing_2", "thing_3", "thing_4", "thing_5", "vip_1", "vip_2", "vip_3", "vip_4", "vip_5", "sub_1", "sub_2", "sub_3", "sub_4", "sub_5", "mod_1", "mod_2", "mod_3", "mod_4", "mod_5", "thing_one", "thing_two", "thing_three", "thing_four", "thing_five", "vip_one", "vip_two", "vip_three", "vip_four", "vip_five", "sub_one", "sub_two", "sub_three", "sub_four", "sub_five", "mod_one", "mod_two", "mod_three", "mod_four", "mod_five"];
+  subNames = [];
+  for (let i = 0; i < nbPerEvent; i++) {
+    subNames.push({"name": previewNames[Math.floor(Math.random() * previewNames.length)]});
+  }
+  return subNames;
+}
+
+function getRandomNamesAndAmounts() {
+  names = getRandomNames();
+  let previewAmounts = [1, 22, 31, 4, 53, 619, 777, 84, 9, 10];
+  for (let i = 0; i < names.length; i++) {
+    names[i] = {"name": names[i].name, "amount": previewAmounts[Math.floor(Math.random() * previewAmounts.length)]};
+  }
+  return names;
+}
 
 function fillFollowers(followerData) {
   followers = followerData.slice(0, nbPerEvent);
@@ -108,6 +127,12 @@ function fillTipGoal(tipCount) {
   $('#tip-goal-text')[0].textContent = text;
 }
 
+function fillCheerGoal(cheerCount) {
+  cheerGoalTemplate = '{cheerGoalText}';
+  text = cheerGoalTemplate.replace('{count}', cheerCount);
+  $('#cheer-goal-text')[0].textContent = text;
+}
+
 function loop() {
   if (events.length === 1)
     return;
@@ -116,6 +141,9 @@ function loop() {
   if (currentEvent < events.length - 1)
     nextEvent = currentEvent + 1;
   nextEventName = events[nextEvent];
+  
+  //console.log("currentEvent : ", events[currentEvent]);
+  //console.log("nextEvent : ", nextEventName);
   
   if (events[currentEvent] === "recent-followers")
     fadeOutElement = $("#recent-followers");
@@ -156,6 +184,11 @@ function loop() {
     fadeOutElement = $("#tip-goal");
   else if (nextEventName === "tip-goal")
     fadeInElement = $("#tip-goal");
+
+  if (events[currentEvent] === "cheer-goal")
+    fadeOutElement = $("#cheer-goal");
+  else if (nextEventName === "cheer-goal")
+    fadeInElement = $("#cheer-goal");
   
   currentEvent = nextEvent;
   
@@ -164,35 +197,57 @@ function loop() {
   });
 }
 
-window.addEventListener('onWidgetLoad', (obj) => {    
+window.addEventListener('onWidgetLoad', (obj) => {
+  // console.log('sessionData has been created!', obj.detail.session);
+  
   if ({enableRecentFollowers}) {
   	events.push("recent-followers");
     $("#recent-followers").removeClass('hidden');
-  	fillFollowers(obj.detail.session.data["follower-recent"]);
+    if ({enablePreview} === true) {
+      fillFollowers(getRandomNames());
+    } else {
+      fillFollowers(obj.detail.session.data["follower-recent"]);
+    }
   }
   
   if ({enableRecentSubs}) {
     events.push("recent-subscribers");
     $("#recent-subscribers").removeClass('hidden');
-    fillSubscribers(obj.detail.session.data["subscriber-recent"]);
+    if ({enablePreview} === true) {
+      fillSubscribers(getRandomNamesAndAmounts());
+    } else {
+      fillSubscribers(obj.detail.session.data["subscriber-recent"]);
+    }
   }
   
   if ({enableRecentCheers}) {
   	events.push("recent-cheers");
     $("#recent-cheers").removeClass('hidden');
-    fillCheers(obj.detail.session.data["cheer-recent"]);
+    if ({enablePreview} === true) {
+      fillCheers(getRandomNamesAndAmounts());
+    } else {
+      fillCheers(obj.detail.session.data["cheer-recent"]);
+    }
   }
   
   if ({enableRecentTips}) {
   	events.push("recent-tips");
     $("#recent-tips").removeClass('hidden');
-    fillTips(obj.detail.session.data["tip-recent"]);
+    if ({enablePreview} === true) {
+      fillTips(getRandomNamesAndAmounts());
+    } else {
+      fillTips(obj.detail.session.data["tip-recent"]);
+    }
   }
   
   if ({enableRecentRaids}) {
   	events.push("recent-raids");
     $("#recent-raids").removeClass('hidden');
-    fillRaids(obj.detail.session.data["raid-recent"]);
+    if ({enablePreview} === true) {
+      fillRaids(getRandomNamesAndAmounts());
+    } else {
+      fillRaids(obj.detail.session.data["raid-recent"]);
+    }
   }
   
   if ({enableFollowerGoal}) {
@@ -242,11 +297,28 @@ window.addEventListener('onWidgetLoad', (obj) => {
     else
       fillTipGoal(obj.detail.session.data["tip-month"].amount);
   }
+
+  if ({enableCheerGoal}) {
+  	events.push("cheer-goal");
+    $("#cheer-goal").removeClass('hidden');
+    cheerCountType = '{cheerTypeDrowpdown}';
+    if (cheerCountType === "total")
+      fillCheerGoal(obj.detail.session.data["cheer-total"].amount);
+    else if (cheerCountType === "goal")
+      fillCheerGoal(obj.detail.session.data["cheer-goal"].amount);
+    else if (cheerCountType === "session")
+      fillCheerGoal(obj.detail.session.data["cheer-session"].amount);
+    else if (cheerCountType === "weekly")
+      fillCheerGoal(obj.detail.session.data["cheer-week"].amount);
+    else
+      fillCheerGoal(obj.detail.session.data["cheer-month"].amount);
+  }
   
   setInterval(loop, {eventsTime} * 1000);
 });
 
 window.addEventListener('onSessionUpdate', (obj) => {
+  console.log('sessionData has been updated', obj.detail.session);
   if ({enableRecentFollowers})
   	fillFollowers(obj.detail.session.data["follower-recent"]);
     
@@ -302,5 +374,19 @@ window.addEventListener('onSessionUpdate', (obj) => {
       fillTipGoal(obj.detail.session.data["tip-week"].amount);
     else
       fillTipGoal(obj.detail.session.data["tip-month"].amount);
+  }
+
+  if ({enableCheerGoal}) {
+    cheerCountType = '{cheerTypeDrowpdown}';
+    if (cheerCountType === "total")
+      fillCheerGoal(obj.detail.session.data["cheer-total"].amount);
+    else if (cheerCountType === "goal")
+      fillCheerGoal(obj.detail.session.data["cheer-goal"].amount);
+    else if (cheerCountType === "session")
+      fillCheerGoal(obj.detail.session.data["cheer-session"].amount);
+    else if (cheerCountType === "weekly")
+      fillCheerGoal(obj.detail.session.data["cheer-week"].amount);
+    else
+      fillCheerGoal(obj.detail.session.data["cheer-month"].amount);
   }
 });

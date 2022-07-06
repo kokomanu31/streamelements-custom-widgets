@@ -1,4 +1,9 @@
 {
+  "enablePreview": {
+  	"type": "checkbox",
+    "label": "Use dummy data (makes sure every event has enough data to visualise without needing to simulate any new events)",
+    "group": "Preview"
+  },
   "eventsLimit": {
     "type": "number",
     "label": "Limit of displayed names per event:",
@@ -55,6 +60,11 @@
   "enableTipGoal": {
   	"type": "checkbox",
     "label": "Show tip goal",
+    "group": "Main"
+  },
+  "enableCheerGoal": {
+  	"type": "checkbox",
+    "label": "Show cheer goal",
     "group": "Main"
   },
   "followerTitleText": {
@@ -256,5 +266,30 @@
       "monthly": "Current month"
     },
     "group": "Tip goal"
+  },
+  "cheerGoalTitleText": {
+  	"type": "text",
+    "label": "Title text",
+    "value": "Cheer Goal:",
+    "group": "Cheer goal"
+  },
+  "cheerGoalText": {
+  	"type": "text",
+    "label": "Cheer goal event text",
+    "value": "$\\{count} / 3 bits",
+    "group": "Cheer goal"
+  },
+  "cheerTypeDrowpdown": {
+  	"type": "dropdown",
+    "label": "Count to use:",
+    "value": "total",
+    "options": {
+      "total": "Total",
+      "goal": "Goal amount",
+      "session": "Session amount",
+      "weekly": "Current week",
+      "monthly": "Current month"
+    },
+    "group": "Cheer goal"
   }
 }

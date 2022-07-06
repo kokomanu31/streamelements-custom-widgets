@@ -43,6 +43,7 @@
 .text {
     height: 100%;
     align-items: center;
+    white-space: nowrap;
 }
 
 .scroll {
