@@ -4,19 +4,11 @@
     "label": "Use dummy data (makes sure every event has enough data to visualise without needing to simulate any new events)",
     "group": "Preview"
   },
-  "eventsLimit": {
+  
+  "eventsTitleTime": {
     "type": "number",
-    "label": "Limit of displayed names per event:",
-    "value": 5,
-    "step": 1,
-    "min": 1,
-    "max": 10,
-    "group": "Main"
-  },
-  "eventsTime": {
-    "type": "number",
-    "label": "Time shown per event (in seconds):",
-    "value": 20,
+    "label": "Time shown for even titles (in seconds):",
+    "value": 10,
     "step": 1,
     "min": 5,
     "max": 100,
@@ -57,16 +49,17 @@
     "label": "Show subscriber goal",
     "group": "Main"
   },
-  "enableTipGoal": {
-  	"type": "checkbox",
-    "label": "Show tip goal",
-    "group": "Main"
-  },
   "enableCheerGoal": {
   	"type": "checkbox",
     "label": "Show cheer goal",
     "group": "Main"
   },
+  "enableTipGoal": {
+  	"type": "checkbox",
+    "label": "Show tip goal",
+    "group": "Main"
+  },
+  
   "followerTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -77,6 +70,24 @@
   	"type": "text",
     "label": "Follower event text",
     "value": "{name}, ",
+    "group": "Recent followers"
+  },
+  "recentFollowerNameLimit": {
+    "type": "number",
+    "label": "Limit of displayed names:",
+    "value": 5,
+    "step": 1,
+    "min": 1,
+    "max": 10,
+    "group": "Recent followers"
+  },
+  "recentFollowerTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
     "group": "Recent followers"
   },
   "followerEnableScroll": {
@@ -92,6 +103,7 @@
     "label": "Scroll speed",
     "group": "Recent followers"
   },
+  
   "subscriberTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -102,6 +114,24 @@
   	"type": "text",
     "label": "Subscriber event text",
     "value": "{name} x{amount} month(s), ",
+    "group": "Recent subscribers"
+  },
+  "recentSubscriberNameLimit": {
+    "type": "number",
+    "label": "Limit of displayed names:",
+    "value": 5,
+    "step": 1,
+    "min": 1,
+    "max": 10,
+    "group": "Recent subscribers"
+  },
+  "recentSubscriberTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
     "group": "Recent subscribers"
   },
   "subscriberEnableScroll": {
@@ -117,6 +147,12 @@
     "label": "Scroll speed",
     "group": "Recent subscribers"
   },
+  "subscriberCondensed": {
+    "type": "checkbox",
+    "label": "Remove duplicates",
+    "group": "Recent subscribers"
+  },
+  
   "cheerTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -127,6 +163,24 @@
   	"type": "text",
     "label": "Cheer event text",
     "value": "{name} x{amount} bit(s), ",
+    "group": "Recent cheers"
+  },
+  "recentCheerNameLimit": {
+    "type": "number",
+    "label": "Limit of displayed names:",
+    "value": 5,
+    "step": 1,
+    "min": 1,
+    "max": 10,
+    "group": "Recent cheers"
+  },
+  "recentCheerTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
     "group": "Recent cheers"
   },
   "cheerEnableScroll": {
@@ -142,6 +196,12 @@
     "label": "Scroll speed",
     "group": "Recent cheers"
   },
+  "cheerCondensed": {
+    "type": "checkbox",
+    "label": "Condense duplicates",
+    "group": "Recent cheers"
+  },
+  
   "tipTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -152,6 +212,24 @@
   	"type": "text",
     "label": "Tip event text",
     "value": "{name} $\\{amount}, ",
+    "group": "Recent tips"
+  },
+  "recentTipNameLimit": {
+    "type": "number",
+    "label": "Limit of displayed names:",
+    "value": 5,
+    "step": 1,
+    "min": 1,
+    "max": 10,
+    "group": "Recent tips"
+  },
+  "recentTipTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
     "group": "Recent tips"
   },
   "tipEnableScroll": {
@@ -167,6 +245,12 @@
     "label": "Scroll speed",
     "group": "Recent tips"
   },
+  "tipCondensed": {
+    "type": "checkbox",
+    "label": "Condense duplicates",
+    "group": "Recent tips"
+  },
+  
   "raidTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -177,6 +261,24 @@
   	"type": "text",
     "label": "Raid event text",
     "value": "{name}, ",
+    "group": "Recent raids"
+  },
+  "recentRaidNameLimit": {
+    "type": "number",
+    "label": "Limit of displayed names:",
+    "value": 5,
+    "step": 1,
+    "min": 1,
+    "max": 10,
+    "group": "Recent raids"
+  },
+  "recentRaidTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
     "group": "Recent raids"
   },
   "raidEnableScroll": {
@@ -192,6 +294,12 @@
     "label": "Scroll speed",
     "group": "Recent raids"
   },
+  "raidCondensed": {
+    "type": "checkbox",
+    "label": "Remove duplicates",
+    "group": "Recent raids"
+  },
+  
   "followerGoalTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -211,21 +319,30 @@
     "options": {
       "total": "Total",
       "goal": "Goal amount",
-      "session": "Session amount",
       "weekly": "Current week",
       "monthly": "Current month"
     },
     "group": "Follower goal"
   },
+  "followerGoalTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
+    "group": "Follower goal"
+  },
+  
   "subscriberGoalTitleText": {
   	"type": "text",
     "label": "Title text",
-    "value": "Sub Goal:",
+    "value": "Subscriber Goal:",
     "group": "Subscriber goal"
   },
   "subscriberGoalText": {
   	"type": "text",
-    "label": "Subscriber goal event text",
+    "label": "Subcriber goal event text",
     "value": "{count} / 2",
     "group": "Subscriber goal"
   },
@@ -236,37 +353,21 @@
     "options": {
       "total": "Total",
       "goal": "Goal amount",
-      "session": "Session amount",
       "weekly": "Current week",
       "monthly": "Current month"
     },
     "group": "Subscriber goal"
   },
-  "tipGoalTitleText": {
-  	"type": "text",
-    "label": "Title text",
-    "value": "Tip Goal:",
-    "group": "Tip goal"
+  "subscriberGoalTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
+    "group": "Subscriber goal"
   },
-  "tipGoalText": {
-  	"type": "text",
-    "label": "Tip goal event text",
-    "value": "$\\{count} / $3",
-    "group": "Tip goal"
-  },
-  "tipTypeDrowpdown": {
-  	"type": "dropdown",
-    "label": "Count to use:",
-    "value": "total",
-    "options": {
-      "total": "Total",
-      "goal": "Goal amount",
-      "session": "Session amount",
-      "weekly": "Current week",
-      "monthly": "Current month"
-    },
-    "group": "Tip goal"
-  },
+  
   "cheerGoalTitleText": {
   	"type": "text",
     "label": "Title text",
@@ -276,7 +377,7 @@
   "cheerGoalText": {
   	"type": "text",
     "label": "Cheer goal event text",
-    "value": "$\\{count} / 3 bits",
+    "value": "{count} bits / 3 bits",
     "group": "Cheer goal"
   },
   "cheerTypeDrowpdown": {
@@ -286,10 +387,98 @@
     "options": {
       "total": "Total",
       "goal": "Goal amount",
-      "session": "Session amount",
       "weekly": "Current week",
       "monthly": "Current month"
     },
     "group": "Cheer goal"
+  },
+  "cheerGoalTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
+    "group": "Cheer goal"
+  },
+  
+  "tipGoalTitleText": {
+  	"type": "text",
+    "label": "Title text",
+    "value": "Tip Goal:",
+    "group": "Tip goal"
+  },
+  "tipGoalText": {
+  	"type": "text",
+    "label": "Tip goal event text",
+    "value": "$\\{count} / $4",
+    "group": "Tip goal"
+  },
+  "tipTypeDrowpdown": {
+  	"type": "dropdown",
+    "label": "Count to use:",
+    "value": "total",
+    "options": {
+      "total": "Total",
+      "goal": "Goal amount",
+      "weekly": "Current week",
+      "monthly": "Current month"
+    },
+    "group": "Tip goal"
+  },
+  "tipGoalTime": {
+    "type": "number",
+    "label": "Time shown (in seconds):",
+    "value": 20,
+    "step": 1,
+    "min": 1,
+    "max": 100,
+    "group": "Tip goal"
+  },
+  
+  "fontColor": {
+  	"type": "colorpicker",
+    "label": "Font color",
+    "value": "#FFFFFF",
+    "group": "Text style"
+  },
+  "googleFont": {
+    "label": "Google Font",
+    "type": "googleFont",
+    "value": "Nunito",
+    "group": "Text style"
+  },
+  "customFont": {
+    "label": "Custom Font Name",
+    "type": "text",
+    "value": "",
+    "group": "Text style"
+  },
+  "fontSize": {
+    "label": "Font size (px)",
+    "type": "number",
+    "value": 18,
+    "step": 1,
+    "min": 0,
+    "group": "Text style"
+  },
+  "fontWeight": {
+    "label": "Font weight",
+    "type": "dropdown",
+    "value": "bold",
+    "options": {
+      "normal": "Normal",
+      "bold": "Bold",
+      "100": "100",
+      "200": "200",
+      "300": "300",
+      "400": "400",
+      "500": "500",
+      "600": "600",
+      "700": "700",
+      "800": "800",
+      "900": "900"
+    },
+    "group": "Text style"
   }
 }

@@ -1,17 +1,16 @@
-let fieldData, sessionData, nbPerEvent = {eventsLimit}, events = [], currentEvent = 0;
-//console.log("chosen events:", events);
+let events = [], eventsTime = [], currentEvent = 0;
 
-function getRandomNames() {
+function getRandomNames(nbNames) {
   let previewNames = ["thing_1", "thing_2", "thing_3", "thing_4", "thing_5", "vip_1", "vip_2", "vip_3", "vip_4", "vip_5", "sub_1", "sub_2", "sub_3", "sub_4", "sub_5", "mod_1", "mod_2", "mod_3", "mod_4", "mod_5", "thing_one", "thing_two", "thing_three", "thing_four", "thing_five", "vip_one", "vip_two", "vip_three", "vip_four", "vip_five", "sub_one", "sub_two", "sub_three", "sub_four", "sub_five", "mod_one", "mod_two", "mod_three", "mod_four", "mod_five"];
-  subNames = [];
-  for (let i = 0; i < nbPerEvent; i++) {
+  let subNames = [];
+  for (let i = 0; i < nbNames; i++) {
     subNames.push({"name": previewNames[Math.floor(Math.random() * previewNames.length)]});
   }
   return subNames;
 }
 
-function getRandomNamesAndAmounts() {
-  names = getRandomNames();
+function getRandomNamesAndAmounts(nbNames) {
+  let names = getRandomNames(nbNames);
   let previewAmounts = [1, 22, 31, 4, 53, 619, 777, 84, 9, 10];
   for (let i = 0; i < names.length; i++) {
     names[i] = {"name": names[i].name, "amount": previewAmounts[Math.floor(Math.random() * previewAmounts.length)]};
@@ -20,9 +19,9 @@ function getRandomNamesAndAmounts() {
 }
 
 function fillFollowers(followerData) {
-  followers = followerData.slice(0, nbPerEvent);
-  followerTemplate = '{followerEventText}';
-  text = '';
+  let followers = followerData.slice(0, {recentFollowerNameLimit});
+  let followerTemplate = '{followerEventText}';
+  let text = '';
   for (var i = 0; i < followers.length; i++) {
   	if (i < followers.length - 1)
       text = text.concat(followerTemplate.replace('{name}', followers[i].name)).concat('   ');
@@ -30,17 +29,30 @@ function fillFollowers(followerData) {
       text = text.concat(followerTemplate.replace('{name}', followers[i].name).replace(',', '')).concat('   ');
   }
   $('#recent-followers-text')[0].textContent = text;
-  if ({followerEnableScroll} === true) {
-   $('#recent-followers-text').addClass('scroll');
+  if ({followerEnableScroll}) {
+    $('#recent-followers-text').addClass('scroll-follower');
   } else {
-    $('#recent-followers-text').removeClass('scroll');
+    $('#recent-followers-text').removeClass('scroll-follower');
   }
 }
 
 function fillSubscribers(subscriberData) {
-  subscribers = subscriberData.slice(0, nbPerEvent);
-  subscriberTemplate = '{subscriberEventText}';
-  text = '';
+  let subscribers = [];
+  if ({subscriberCondensed}) {
+    let currentSubscriber = 0, i = -1;
+  	while (subscribers.length < {recentSubscriberNameLimit} && currentSubscriber < subscriberData.length - 1) {
+      i = subscribers.findIndex(subscriber => subscriber.name === subscriberData[currentSubscriber]["name"]);
+      if (i === -1) {
+		subscribers.push(subscriberData[currentSubscriber]);
+      }
+      currentSubscriber++;
+    }
+  } else {
+  	subscribers = subscriberData.slice(0, {recentSubscriberNameLimit});
+  }
+  
+  let subscriberTemplate = '{subscriberEventText}';
+  let text = '';
   for (var i = 0; i < subscribers.length; i++) {
   	if (i < subscribers.length - 1)
       text = text.concat(subscriberTemplate.replace('{name}', subscribers[i].name).replace('{amount}', subscribers[i].amount)).concat('   ');
@@ -48,17 +60,32 @@ function fillSubscribers(subscriberData) {
       text = text.concat(subscriberTemplate.replace('{name}', subscribers[i].name).replace('{amount}', subscribers[i].amount).replace(',', '')).concat('   ');
   }
   $('#recent-subscribers-text')[0].textContent = text;
-  if ({subscriberEnableScroll} === true) {
-    $('#recent-subscribers-text').addClass('scroll');
+  if ({subscriberEnableScroll}) {
+    $('#recent-subscribers-text').addClass('scroll-subscriber');
   } else {
-    $('#recent-subscribers-text').removeClass('scroll');
+    $('#recent-subscribers-text').removeClass('scroll-subscriber');
   }
 }
 
 function fillCheers(cheerData) {
-  cheers = cheerData.slice(0, nbPerEvent);
-  cheerTemplate = '{cheerEventText}';
-  text = '';
+  let cheers = [];
+  if ({cheerCondensed}) {
+    let currentCheer = 0, i = -1;
+  	while (cheers.length < {recentCheerNameLimit} && currentCheer < cheerData.length - 1) {
+      i = cheers.findIndex(cheerer => cheerer.name === cheerData[currentCheer]["name"]);
+      if (i > -1) {
+      	cheers[i]["amount"] += cheerData[currentCheer]["amount"];
+      } else {
+      	cheers.push(cheerData[currentCheer]);
+      }
+      currentCheer++;
+    }
+  } else {
+  	cheers = cheerData.slice(0, {recentCheerNameLimit});
+  }
+  
+  let cheerTemplate = '{cheerEventText}';
+  let text = '';
   for (var i = 0; i < cheers.length; i++) {
   	if (i < cheers.length - 1)
       text = text.concat(cheerTemplate.replace('{name}', cheers[i].name).replace('{amount}', cheers[i].amount)).concat('   ');
@@ -66,17 +93,32 @@ function fillCheers(cheerData) {
       text = text.concat(cheerTemplate.replace('{name}', cheers[i].name).replace('{amount}', cheers[i].amount).replace(',', '')).concat('   ');
   }
   $('#recent-cheers-text')[0].textContent = text;
-  if ({cheerEnableScroll} === true) {
-    $('#recent-cheers-text').addClass('scroll');
+  if ({cheerEnableScroll}) {
+    $('#recent-cheers-text').addClass('scroll-cheer');
   } else {
-    $('#recent-cheers-text').removeClass('scroll');
+    $('#recent-cheers-text').removeClass('scroll-cheer');
   }
 }
 
 function fillTips(tipData) {
-  tips = tipData.slice(0, nbPerEvent);
-  tipTemplate = '{tipEventText}';
-  text = '';
+  let tips = [];
+  if ({tipCondensed}) {
+    let currentTip = 0, i = -1;
+  	while (tips.length < {recentTipNameLimit} && currentTip < tipData.length - 1) {
+      i = tips.findIndex(tiper => tiper.name === tipData[currentTip]["name"]);
+      if (i > -1) {
+      	tips[i]["amount"] += tipData[currentTip]["amount"];
+      } else {
+      	tips.push(tipData[currentTip]);
+      }
+      currentTip++;
+    }
+  } else {
+  	tips = tipData.slice(0, {recentTipNameLimit});
+  }
+  
+  let tipTemplate = '{tipEventText}';
+  let text = '';
   for (var i = 0; i < tips.length; i++) {
   	if (i < tips.length - 1)
       text = text.concat(tipTemplate.replace('{name}', tips[i].name).replace('{amount}', tips[i].amount)).concat('   ');
@@ -84,17 +126,30 @@ function fillTips(tipData) {
       text = text.concat(tipTemplate.replace('{name}', tips[i].name).replace('{amount}', tips[i].amount).replace(',', '')).concat('   ');
   }
   $('#recent-tips-text')[0].textContent = text;
-  if ({tipEnableScroll} === true) {
-    $('#recent-tips-text').addClass('scroll');
+  if ({tipEnableScroll}) {
+    $('#recent-tips-text').addClass('scroll-tip');
   } else {
-    $('#recent-tips-text').removeClass('scroll');
+    $('#recent-tips-text').removeClass('scroll-tip');
   }
 }
 
 function fillRaids(raidData) {
-  raids = raidData.slice(0, nbPerEvent);
-  raidTemplate = '{raidEventText}';
-  text = '';
+  let raids = [];
+  if ({raidCondensed}) {
+    let currentRaid = 0, i = -1;
+  	while (raids.length < {recentRaidNameLimit} && currentRaid < raidData.length - 1) {
+      i = raids.findIndex(raider => raider.name === raidData[currentRaid]["name"]);
+      if (i === -1) {
+      	raids.push(raidData[currentRaid]);
+      }
+      currentRaid++;
+    }
+  } else {
+  	raids = raidData.slice(0, {recentRaidNameLimit});
+  }
+  
+  let raidTemplate = '{raidEventText}';
+  let text = '';
   for (var i = 0; i < raids.length; i++) {
   	if (i < raids.length - 1)
       text = text.concat(raidTemplate.replace('{name}', raids[i].name).replace('{amount}', raids[i].amount)).concat('   ');
@@ -102,291 +157,378 @@ function fillRaids(raidData) {
       text = text.concat(raidTemplate.replace('{name}', raids[i].name).replace('{amount}', raids[i].amount).replace(',', '')).concat('   ');
   }
   $('#recent-raids-text')[0].textContent = text;
-  if ({raidEnableScroll} === true) {
-    $('#recent-raids-text').addClass('scroll');
+  if ({raidEnableScroll}) {
+    $('#recent-raids-text').addClass('scroll-raid');
   } else {
-    $('#recent-raids-text').removeClass('scroll');
+    $('#recent-raids-text').removeClass('scroll-raid');
   }
 }
 
 function fillFollowerGoal(followerCount) {
-  followerGoalTemplate = '{followerGoalText}';
-  text = followerGoalTemplate.replace('{count}', followerCount);
+  let followerGoalTemplate = '{followerGoalText}';
+  let text = followerGoalTemplate.replace('{count}', followerCount);
   $('#follower-goal-text')[0].textContent = text;
 }
 
 function fillSubscriberGoal(subscriberCount) {
-  subscriberGoalTemplate = '{subscriberGoalText}';
-  text = subscriberGoalTemplate.replace('{count}', subscriberCount);
+  let subscriberGoalTemplate = '{subscriberGoalText}';
+  let text = subscriberGoalTemplate.replace('{count}', subscriberCount);
   $('#subscriber-goal-text')[0].textContent = text;
 }
 
-function fillTipGoal(tipCount) {
-  tipGoalTemplate = '{tipGoalText}';
-  text = tipGoalTemplate.replace('{count}', tipCount);
-  $('#tip-goal-text')[0].textContent = text;
+function fillCheerGoal(cheerCount) {
+  let cheerGoalTemplate = '{cheerGoalText}';
+  let text = cheerGoalTemplate.replace('{count}', cheerCount);
+  $('#cheer-goal-text')[0].textContent = text;
 }
 
-function fillCheerGoal(cheerCount) {
-  cheerGoalTemplate = '{cheerGoalText}';
-  text = cheerGoalTemplate.replace('{count}', cheerCount);
-  $('#cheer-goal-text')[0].textContent = text;
+function fillTipGoal(tipCount) {
+  let tipGoalTemplate = '{tipGoalText}';
+  let text = tipGoalTemplate.replace('{count}', tipCount);
+  $('#tip-goal-text')[0].textContent = text;
 }
 
 function loop() {
   if (events.length === 1)
     return;
   
-  nextEvent = 0;
+  let nextEvent = 0;
   if (currentEvent < events.length - 1)
     nextEvent = currentEvent + 1;
-  nextEventName = events[nextEvent];
-  
-  //console.log("currentEvent : ", events[currentEvent]);
-  //console.log("nextEvent : ", nextEventName);
-  
-  if (events[currentEvent] === "recent-followers")
-    fadeOutElement = $("#recent-followers");
-  else if (nextEventName === "recent-followers")
-    fadeInElement = $("#recent-followers");
-  
-  if (events[currentEvent] === "recent-subscribers")
-    fadeOutElement = $("#recent-subscribers");
-  else if (nextEventName === "recent-subscribers")
-    fadeInElement = $("#recent-subscribers");
-    
-  if (events[currentEvent] === "recent-cheers")
-    fadeOutElement = $("#recent-cheers");
-  else if (nextEventName === "recent-cheers")
-    fadeInElement = $("#recent-cheers");
-  
-  if (events[currentEvent] === "recent-tips")
-    fadeOutElement = $("#recent-tips");
-  else if (nextEventName === "recent-tips")
-    fadeInElement = $("#recent-tips");
-  
-  if (events[currentEvent] === "recent-raids")
-    fadeOutElement = $("#recent-raids");
-  else if (nextEventName === "recent-raids")
-    fadeInElement = $("#recent-raids");
-  
-  if (events[currentEvent] === "follower-goal")
-    fadeOutElement = $("#follower-goal");
-  else if (nextEventName === "follower-goal")
-    fadeInElement = $("#follower-goal");
-  
-  if (events[currentEvent] === "subscriber-goal")
-    fadeOutElement = $("#subscriber-goal");
-  else if (nextEventName === "subscriber-goal")
-    fadeInElement = $("#subscriber-goal");
-  
-  if (events[currentEvent] === "tip-goal")
-    fadeOutElement = $("#tip-goal");
-  else if (nextEventName === "tip-goal")
-    fadeInElement = $("#tip-goal");
+  let nextEventName = events[nextEvent];
 
-  if (events[currentEvent] === "cheer-goal")
-    fadeOutElement = $("#cheer-goal");
-  else if (nextEventName === "cheer-goal")
-    fadeInElement = $("#cheer-goal");
+  let fadeInElement, fadeOutElement;
+
+  switch (events[currentEvent]) {
+    case "recent-followers-title":
+      fadeOutElement = $("#recent-followers-title");
+      break;
+      
+    case "recent-followers":
+      fadeOutElement = $("#recent-followers-text");
+      break;
+      
+    case "recent-subscribers-title":
+      fadeOutElement = $("#recent-subscribers-title");
+      break;
+      
+    case "recent-subscribers":
+      fadeOutElement = $("#recent-subscribers-text");
+      break;
+      
+    case "recent-cheers-title":
+      fadeOutElement = $("#recent-cheers-title");
+      break;
+      
+    case "recent-cheers":
+      fadeOutElement = $("#recent-cheers-text");
+      break;
+      
+    case "recent-tips-title":
+      fadeOutElement = $("#recent-tips-title");
+      break;
+      
+    case "recent-tips":
+      fadeOutElement = $("#recent-tips-text");
+      break;
+      
+    case "recent-raids-title":
+      fadeOutElement = $("#recent-raids-title");
+      break;
+      
+    case "recent-raids":
+      fadeOutElement = $("#recent-raids-text");
+      break;
+      
+    case "follower-goal":
+      fadeOutElement = $("#follower-goal");
+      break;
+      
+    case "subscriber-goal":
+      fadeOutElement = $("#subscriber-goal");
+      break;
+      
+    case "cheer-goal":
+      fadeOutElement = $("#cheer-goal");
+      break;
+      
+    case "tip-goal":
+      fadeOutElement = $("#tip-goal");
+      break;
+  }
+
+  switch (nextEventName) {
+    case "recent-followers-title":
+      fadeInElement = $("#recent-followers-title");
+      break;
+      
+    case "recent-followers":
+      fadeInElement = $("#recent-followers-text");
+      break;
+      
+    case "recent-subscribers-title":
+      fadeInElement = $("#recent-subscribers-title");
+      break;
+      
+    case "recent-subscribers":
+      fadeInElement = $("#recent-subscribers-text");
+      break;
+      
+    case "recent-cheers-title":
+      fadeInElement = $("#recent-cheers-title");
+      break;
+      
+    case "recent-cheers":
+      fadeInElement = $("#recent-cheers-text");
+      break;
+      
+    case "recent-tips-title":
+      fadeInElement = $("#recent-tips-title");
+      break;
+      
+    case "recent-tips":
+      fadeInElement = $("#recent-tips-text");
+      break;
+      
+    case "recent-raids-title":
+      fadeInElement = $("#recent-raids-title");
+      break;
+      
+    case "recent-raids":
+      fadeInElement = $("#recent-raids-text");
+      break;
+      
+    case "follower-goal":
+      fadeInElement = $("#follower-goal");
+      break;
+      
+    case "subscriber-goal":
+      fadeInElement = $("#subscriber-goal");
+      break;
+      
+    case "cheer-goal":
+      fadeInElement = $("#cheer-goal");
+      break;
+      
+    case "tip-goal":
+      fadeInElement = $("#tip-goal");
+      break;
+  }
   
   currentEvent = nextEvent;
   
   fadeOutElement.fadeOut('slow', function() {
     fadeInElement.fadeIn('slow');
   });
+
+  setTimeout(loop, eventsTime[currentEvent] * 1000);
 }
 
 window.addEventListener('onWidgetLoad', (obj) => {
-  // console.log('sessionData has been created!', obj.detail.session);
-  
+  const data = obj.detail.session.data;
   if ({enableRecentFollowers}) {
+    events.push("recent-followers-title");
+    eventsTime.push({eventsTitleTime});
   	events.push("recent-followers");
-    $("#recent-followers").removeClass('hidden');
-    if ({enablePreview} === true) {
-      fillFollowers(getRandomNames());
-    } else {
-      fillFollowers(obj.detail.session.data["follower-recent"]);
-    }
+    eventsTime.push({recentFollowerTime});
+    
+    if ({enablePreview})
+      fillFollowers(getRandomNames({recentFollowerNameLimit}));
+    else
+      fillFollowers(data["follower-recent"]);
   }
   
   if ({enableRecentSubs}) {
-    events.push("recent-subscribers");
-    $("#recent-subscribers").removeClass('hidden');
-    if ({enablePreview} === true) {
-      fillSubscribers(getRandomNamesAndAmounts());
-    } else {
-      fillSubscribers(obj.detail.session.data["subscriber-recent"]);
-    }
+    events.push("recent-subscribers-title");
+    eventsTime.push({eventsTitleTime});
+  	events.push("recent-subscribers");
+    eventsTime.push({recentSubscriberTime});
+    
+    if ({enablePreview})
+      fillSubscribers(getRandomNamesAndAmounts({recentSubscriberNameLimit}));
+    else
+      fillSubscribers(data["subscriber-recent"]);
   }
   
   if ({enableRecentCheers}) {
+    events.push("recent-cheers-title");
+    eventsTime.push({eventsTitleTime});
   	events.push("recent-cheers");
-    $("#recent-cheers").removeClass('hidden');
-    if ({enablePreview} === true) {
-      fillCheers(getRandomNamesAndAmounts());
-    } else {
-      fillCheers(obj.detail.session.data["cheer-recent"]);
-    }
+    eventsTime.push({recentCheerTime});
+    
+    if ({enablePreview})
+      fillCheers(getRandomNamesAndAmounts({recentCheerNameLimit}));
+    else
+      fillCheers(data["cheer-recent"]);
   }
   
   if ({enableRecentTips}) {
+    events.push("recent-tips-title");
+    eventsTime.push({eventsTitleTime});
   	events.push("recent-tips");
-    $("#recent-tips").removeClass('hidden');
-    if ({enablePreview} === true) {
-      fillTips(getRandomNamesAndAmounts());
-    } else {
-      fillTips(obj.detail.session.data["tip-recent"]);
-    }
+    eventsTime.push({recentTipTime});
+    
+    if ({enablePreview})
+      fillTips(getRandomNamesAndAmounts({recentTipNameLimit}));
+    else
+      fillTips(data["tip-recent"]);
   }
   
   if ({enableRecentRaids}) {
+    events.push("recent-raids-title");
+    eventsTime.push({eventsTitleTime});
   	events.push("recent-raids");
-    $("#recent-raids").removeClass('hidden');
-    if ({enablePreview} === true) {
-      fillRaids(getRandomNamesAndAmounts());
-    } else {
-      fillRaids(obj.detail.session.data["raid-recent"]);
-    }
+    eventsTime.push({recentRaidTime});
+    
+    if ({enablePreview})
+      fillRaids(getRandomNamesAndAmounts({recentRaidNameLimit}));
+    else
+      fillRaids(data["raid-recent"]);
   }
   
   if ({enableFollowerGoal}) {
   	events.push("follower-goal");
-    $("#follower-goal").removeClass('hidden');
+    eventsTime.push({followerGoalTime});
     followerCountType = '{followerTypeDrowpdown}';
     if (followerCountType === "total")
-      fillFollowerGoal(obj.detail.session.data["follower-total"].count);
+      fillFollowerGoal(data["follower-total"]["count"]);
     else if (followerCountType === "goal")
-      fillFollowerGoal(obj.detail.session.data["follower-goal"].amount);
-    else if (followerCountType === "session")
-      fillFollowerGoal(obj.detail.session.data["follower-session"].count);
+      fillFollowerGoal(data["follower-goal"]["amount"]);
     else if (followerCountType === "weekly")
-      fillFollowerGoal(obj.detail.session.data["follower-week"].count);
+      fillFollowerGoal(data["follower-week"]["count"]);
     else
-      fillFollowerGoal(obj.detail.session.data["follower-month"].count);
+      fillFollowerGoal(data["follower-month"]["count"]);
   }
   
   if ({enableSubscriberGoal}) {
   	events.push("subscriber-goal");
-    $("#subscriber-goal").removeClass('hidden');
+    eventsTime.push({subscriberGoalTime});
     subscriberCountType = '{subscriberTypeDrowpdown}';
     if (subscriberCountType === "total")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-total"].count);
+      fillSubscriberGoal(data["subscriber-total"]["count"]);
     else if (subscriberCountType === "goal")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-goal"].amount);
-    else if (subscriberCountType === "session")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-session"].count);
+      fillSubscriberGoal(data["subscriber-goal"]["amount"]);
     else if (subscriberCountType === "weekly")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-week"].count);
+      fillSubscriberGoal(data["subscriber-week"]["count"]);
     else
-      fillSubscriberGoal(obj.detail.session.data["subscriber-month"].count);
+      fillSubscriberGoal(data["subscriber-month"]["count"]);
+  }
+  
+  if ({enableCheerGoal}) {
+  	events.push("cheer-goal");
+    eventsTime.push({cheerGoalTime});
+    cheerCountType = '{cheerTypeDrowpdown}';
+    if (cheerCountType === "total")
+      fillCheerGoal(data["cheer-total"]["amount"]);
+    else if (cheerCountType === "goal")
+      fillCheerGoal(data["cheer-goal"]["amount"]);
+    else if (cheerCountType === "weekly")
+      fillCheerGoal(data["cheer-week"]["amount"]);
+    else
+      fillCheerGoal(data["cheer-month"]["amount"]);
   }
   
   if ({enableTipGoal}) {
   	events.push("tip-goal");
-    $("#tip-goal").removeClass('hidden');
+    eventsTime.push({tipGoalTime});
     tipCountType = '{tipTypeDrowpdown}';
     if (tipCountType === "total")
-      fillTipGoal(obj.detail.session.data["tip-total"].amount);
+      fillTipGoal(data["tip-total"]["amount"]);
     else if (tipCountType === "goal")
-      fillTipGoal(obj.detail.session.data["tip-goal"].amount);
-    else if (tipCountType === "session")
-      fillTipGoal(obj.detail.session.data["tip-session"].amount);
+      fillTipGoal(data["tip-goal"]["amount"]);
     else if (tipCountType === "weekly")
-      fillTipGoal(obj.detail.session.data["tip-week"].amount);
+      fillTipGoal(data["tip-week"]["amount"]);
     else
-      fillTipGoal(obj.detail.session.data["tip-month"].amount);
-  }
-
-  if ({enableCheerGoal}) {
-  	events.push("cheer-goal");
-    $("#cheer-goal").removeClass('hidden');
-    cheerCountType = '{cheerTypeDrowpdown}';
-    if (cheerCountType === "total")
-      fillCheerGoal(obj.detail.session.data["cheer-total"].amount);
-    else if (cheerCountType === "goal")
-      fillCheerGoal(obj.detail.session.data["cheer-goal"].amount);
-    else if (cheerCountType === "session")
-      fillCheerGoal(obj.detail.session.data["cheer-session"].amount);
-    else if (cheerCountType === "weekly")
-      fillCheerGoal(obj.detail.session.data["cheer-week"].amount);
-    else
-      fillCheerGoal(obj.detail.session.data["cheer-month"].amount);
+      fillTipGoal(data["tip-month"]["amount"]);
   }
   
-  setInterval(loop, {eventsTime} * 1000);
+  currentEvent = events.length - 1;
+  setTimeout(loop, 1);
 });
 
 window.addEventListener('onSessionUpdate', (obj) => {
-  console.log('sessionData has been updated', obj.detail.session);
-  if ({enableRecentFollowers})
-  	fillFollowers(obj.detail.session.data["follower-recent"]);
-    
-  if ({enableRecentSubs})
-    fillSubscribers(obj.detail.session.data["subscriber-recent"]);
+  const data = obj.detail.session;
   
-  if ({enableRecentCheers})
-    fillCheers(obj.detail.session.data["cheers-recent"]);
+  if ({enableRecentFollowers}) {
+    if ({enablePreview})
+      fillFollowers(getRandomNames({recentFollowerNameLimit}));
+    else
+      fillFollowers(data["follower-recent"]);
+  }
   
-  if ({enableRecentTips})
-    fillTips(obj.detail.session.data["tip-recent"]);
+  if ({enableRecentSubs}) {
+    if ({enablePreview})
+      fillSubscribers(getRandomNamesAndAmounts({recentSubscriberNameLimit}));
+    else
+      fillSubscribers(data["subscriber-recent"]);
+  }
   
-  if ({enableRecentRaids})
-    fillRaids(obj.detail.session.data["raid-recent"]);
+  if ({enableRecentCheers}) {    
+    if ({enablePreview})
+      fillCheers(getRandomNamesAndAmounts({recentCheerNameLimit}));
+    else
+      fillCheers(data["cheer-recent"]);
+  }
+  
+  if ({enableRecentTips}) {    
+    if ({enablePreview})
+      fillTips(getRandomNamesAndAmounts({recentTipNameLimit}));
+    else
+      fillTips(data["tip-recent"]);
+  }
+  
+  if ({enableRecentRaids}) {    
+    if ({enablePreview})
+      fillRaids(getRandomNamesAndAmounts({recentRaidNameLimit}));
+    else
+      fillRaids(data["raid-recent"]);
+  }
   
   if ({enableFollowerGoal}) {
-    followerCountType = '{followerTypeDrowpdown}';
+    let followerCountType = '{followerTypeDrowpdown}';
     if (followerCountType === "total")
-      fillFollowerGoal(obj.detail.session.data["follower-total"].count);
+      fillFollowerGoal(data["follower-total"].count);
     else if (followerCountType === "goal")
-      fillFollowerGoal(obj.detail.session.data["follower-goal"].amount);
-    else if (followerCountType === "session")
-      fillFollowerGoal(obj.detail.session.data["follower-session"].count);
+      fillFollowerGoal(data["follower-goal"].amount);
     else if (followerCountType === "weekly")
-      fillFollowerGoal(obj.detail.session.data["follower-week"].count);
+      fillFollowerGoal(data["follower-week"].count);
     else
-      fillFollowerGoal(obj.detail.session.data["follower-month"].count);
+      fillFollowerGoal(data["follower-month"].count);
   }
   
   if ({enableSubscriberGoal}) {
-    subscriberCountType = '{subscriberTypeDrowpdown}';
+    let subscriberCountType = '{subscriberTypeDrowpdown}';
     if (subscriberCountType === "total")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-total"].count);
+      fillSubscriberGoal(data["subscriber-total"].count);
     else if (subscriberCountType === "goal")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-goal"].amount);
-    else if (subscriberCountType === "session")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-session"].count);
+      fillSubscriberGoal(data["subscriber-goal"].amount);
     else if (subscriberCountType === "weekly")
-      fillSubscriberGoal(obj.detail.session.data["subscriber-week"].count);
+      fillSubscriberGoal(data["subscriber-week"].count);
     else
-      fillSubscriberGoal(obj.detail.session.data["subscriber-month"].count);
+      fillSubscriberGoal(data["subscriber-month"].count);
+  }
+  
+  if ({enableCheerGoal}) {
+    let cheerCountType = '{cheerTypeDrowpdown}';
+    if (cheerCountType === "total")
+      fillCheerGoal(data["cheer-total"]["amount"]);
+    else if (cheerCountType === "goal")
+      fillCheerGoal(data["cheer-goal"]["amount"]);
+    else if (cheerCountType === "weekly")
+      fillCheerGoal(data["cheer-week"]["amount"]);
+    else
+      fillCheerGoal(data["cheer-month"]["amount"]);
   }
   
   if ({enableTipGoal}) {
-    tipCountType = '{tipTypeDrowpdown}';
+    let tipCountType = '{tipTypeDrowpdown}';
     if (tipCountType === "total")
-      fillTipGoal(obj.detail.session.data["tip-total"].amount);
+      fillTipGoal(data["tip-total"]["amount"]);
     else if (tipCountType === "goal")
-      fillTipGoal(obj.detail.session.data["tip-goal"].amount);
-    else if (tipCountType === "session")
-      fillTipGoal(obj.detail.session.data["tip-session"].amount);
+      fillTipGoal(data["tip-goal"]["amount"]);
     else if (tipCountType === "weekly")
-      fillTipGoal(obj.detail.session.data["tip-week"].amount);
+      fillTipGoal(data["tip-week"]["amount"]);
     else
-      fillTipGoal(obj.detail.session.data["tip-month"].amount);
-  }
-
-  if ({enableCheerGoal}) {
-    cheerCountType = '{cheerTypeDrowpdown}';
-    if (cheerCountType === "total")
-      fillCheerGoal(obj.detail.session.data["cheer-total"].amount);
-    else if (cheerCountType === "goal")
-      fillCheerGoal(obj.detail.session.data["cheer-goal"].amount);
-    else if (cheerCountType === "session")
-      fillCheerGoal(obj.detail.session.data["cheer-session"].amount);
-    else if (cheerCountType === "weekly")
-      fillCheerGoal(obj.detail.session.data["cheer-week"].amount);
-    else
-      fillCheerGoal(obj.detail.session.data["cheer-month"].amount);
+      fillTipGoal(data["tip-month"]["amount"]);
   }
 });
