@@ -6,7 +6,8 @@ A repo containing all the StreamElements custom widgets made by le moi, koko ðŸ¤
 - [Recent Events & Goals](./Recent%20Events%20%26%20Goals/)
 
 ### Currently working on
-- Nothing
+- [Stream Schedule Preview](./Stream%20Schedule%20Preview/)
+- Nothing else...
 
 <img src="https://media.giphy.com/media/QZB0rrcGLljpu/giphy.gif" width="100" height="70" />
 

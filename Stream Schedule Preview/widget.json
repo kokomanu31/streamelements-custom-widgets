@@ -1,0 +1,28 @@
+{
+    "wordsLabel": {
+      "label": "All trigger words",
+      "type": "hidden",
+      "group": "Settings"
+    },
+    "words": {
+      "label": "(Comma separated)",
+      "type": "text",
+      "value": "!latestvid",
+      "group": "Settings"
+    },
+    "Sunday": {
+       "type": "image-input",
+       "label": "Sunday",
+       "group": "Settings"
+    },
+    "Thursday": {
+       "type": "image-input",
+       "label": "Thursday",
+       "group": "Settings"
+    },
+    "Friday": {
+       "type": "image-input",
+       "label": "Friday",
+       "group": "Settings"
+    }
+  }
