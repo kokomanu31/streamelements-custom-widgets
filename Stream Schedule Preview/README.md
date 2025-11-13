@@ -25,6 +25,7 @@ Show the stream schedule for the week with images for every day allowing you to 
 - Be able to test the widget without using chat command
 - Change the delay between the cards without touching code
 - Change the fade duration without touching code
+- Fetch image on twitch's category name instead of uploading own image
 
 ### Watch me programming LIVE
 I work on most of my projects live on [Twitch](https://www.twitch.tv/kokomanu_31) so if you ever want to see everything I do feel free to drop by!
